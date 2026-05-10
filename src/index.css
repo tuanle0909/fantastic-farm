@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Fantastic Farm – light: cream shell, white cards, lime accent */
+    --bg: #f0ebe0;
+    --shell: #fffbf0;
+    --card: #ffffff;
+    --surface: #f7f2e6;
+    --text: #1a1a1a;
+    --muted: #5c5c5c;
+    --border: #e5dcc8;
+    --accent: #a2d729;
+    --accent-text: #1c1c0c;
+    --nav-inactive: #e8e6df;
+    --nav-inactive-text: #4a4a4a;
+    --theme-pill: #fff4c4;
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #14110c;
+    --shell: #1c1812;
+    --card: #232017;
+    --surface: #2a261d;
+    --text: #f5f0e6;
+    --muted: #a89f8a;
+    --border: #3d3628;
+    --accent: #8fb82a;
+    --accent-text: #0f0f0a;
+    --nav-inactive: #2f2a1f;
+    --nav-inactive-text: #b8b0a0;
+    --theme-pill: #3d3520;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Inter, system-ui, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "Fantastic Farm Player #1",
+  "description": "Demo player avatar for Fantastic Farm (replace with final copy).",
+  "image": "https://ipfs.io/ipfs/bafkreiae7x4jfe4qatnaoflfppttqdorah6ev7zzbytgtj2g54sp2brgm4",
+  "attributes": [
+    { "trait_type": "Background", "value": "Pastel Sky" },
+    { "trait_type": "Hair", "value": "Short Brown" },
+    { "trait_type": "Hat", "value": "Straw Hat" },
+    { "trait_type": "Eye Color", "value": "Green" },
+    { "trait_type": "Glasses", "value": "None" },
+    { "trait_type": "Outfit", "value": "Overalls" },
+    { "trait_type": "Expression", "value": "Gentle Smile" }
+  ]
+}
