@@ -50,12 +50,11 @@ Set secret **`NODE_AUTH_TOKEN`** = GitHub PAT with **`read:packages`**.
 
 ## Vercel
 
-1. Import repo → Framework Preset **Vite**.
-2. Root directory: **.** (repo root).
-3. Add all `VITE_*` in **Settings → Environment Variables** (Production + Preview).
-4. Add `NODE_AUTH_TOKEN` for install if build runs on Vercel (or use `SKIP` env-specific install — prefer setting token).
+Chi tiết từng bước: **[DEPLOY_VERCEL.md](./DEPLOY_VERCEL.md)**.
 
-[`vercel.json`](./vercel.json) includes SPA rewrites for React Router.
+Tóm tắt: import repo → branch **`production`** (tuỳ team) → thêm **`NODE_AUTH_TOKEN`** + toàn bộ **`VITE_*`** → Deploy.
+
+[`vercel.json`](./vercel.json) sets `installCommand` / `buildCommand`, output **`dist`**, SPA rewrites.
 
 ## Netlify
 
