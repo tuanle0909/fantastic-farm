@@ -44,8 +44,6 @@ import {
 } from "../services/onchainMintService";
 import { getStoredAuth } from "../services/authStorage";
 import type { GameLoadData } from "../types/api";
-import FarmPanel from "./FarmPanel";
-import EggNftShopPanel from "./EggNftShopPanel";
 import { normalizeInventoryPayloadFromUnity } from "../services/normalizeInventoryPayload";
 import { decodeFarmProductNftLabel } from "../gameplay/gddUi";
 
@@ -55,8 +53,6 @@ const UNITY_BRIDGE_OBJECT = "ReactBridge";
 const EGG_NFT_SPECIES_BY_CODE: SpeciesId[] = ["chicken", "goat", "sheep", "cow"];
 const FARM_PRODUCT_SPECIES_BY_CODE = ["chicken", "goat", "sheep", "cow"] as const;
 const FARM_PRODUCT_TIER_BY_INDEX = ["silver", "gold", "ruby", "emerald", "rainbow"] as const;
-
-type GameUserGoldSnapshot = { gold?: number };
 
 type UnityOwnedFarmProductNft = {
     objectId: string;
@@ -178,7 +174,6 @@ export default function UnityView() {
     } = gameAuth;
 
     const [gameSnapshot, setGameSnapshot] = useState<GameLoadData | null>(null);
-    const [eggShopError, setEggShopError] = useState("");
     const onChainFcMist = useOnChainFcMist(Boolean(account?.address));
     const onChainFcBalance = useMemo(() => fcDisplayNumberFromMist(onChainFcMist), [onChainFcMist]);
 
@@ -256,24 +251,6 @@ export default function UnityView() {
             );
         },
         [account?.address, buildUnityGameSnapshot, sendMessage],
-    );
-
-    const handleOnChainHatchFinalize = useCallback(
-        async (data: GameLoadData) => {
-            setEggShopError("");
-            setGameSnapshot(data);
-            dispatchEconomyRefresh();
-            await sendGameSnapshotToUnity("OnGameUpdated", data, "hatch_onchain");
-            try {
-                const latest = await loadGameData();
-                setGameSnapshot(latest);
-                await sendGameSnapshotToUnity("OnGameUpdated", latest, "hatch_onchain_refresh");
-            } catch (err: unknown) {
-                // eslint-disable-next-line no-console
-                console.warn("[Unity] hatch_onchain refresh failed", err);
-            }
-        },
-        [sendGameSnapshotToUnity],
     );
 
     useEffect(() => {
@@ -671,8 +648,6 @@ export default function UnityView() {
             cancelled = true;
         };
     }, [authState, account?.address, setAuthState, setErrorMessage]);
-
-    const gameUser = gameSnapshot?.user as GameUserGoldSnapshot | undefined;
 
     const displayWalletName = useMemo(() => {
         if (currentWallet.connectionStatus !== "connected") {
