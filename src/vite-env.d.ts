@@ -8,6 +8,8 @@ interface ImportMetaEnv {
     readonly VITE_SLUSH_WALLET_ORIGIN?: string;
     readonly VITE_PREFERRED_WALLET?: string;
     readonly VITE_UNITY_BUILD_BASE_URL?: string;
+    /** Shown in Unity WebGL loader metadata (default "1.0" if unset). */
+    readonly VITE_UNITY_PRODUCT_VERSION?: string;
     /** Same as BE `FANTASTIC_FARM_PACKAGE_ID` after publish. */
     readonly VITE_FANTASTIC_FARM_PACKAGE_ID?: string;
     /** Same as BE `FANTASTIC_FARM_REGISTRY_OBJECT_ID` (shared `FarmRegistry`). */

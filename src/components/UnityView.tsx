@@ -50,6 +50,13 @@ import { decodeFarmProductNftLabel } from "../gameplay/gddUi";
 const shortenAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 const UNITY_BRIDGE_OBJECT = "ReactBridge";
 
+/** Passed to Unity loader — avoids "companyName / productName / productVersion missing" console warnings. */
+const UNITY_WEBGL_META = {
+    companyName: "Fantastic Team",
+    productName: "Fantastic Farm",
+    productVersion: import.meta.env.VITE_UNITY_PRODUCT_VERSION?.trim() || "1.0",
+} as const;
+
 const EGG_NFT_SPECIES_BY_CODE: SpeciesId[] = ["chicken", "goat", "sheep", "cow"];
 const FARM_PRODUCT_SPECIES_BY_CODE = ["chicken", "goat", "sheep", "cow"] as const;
 const FARM_PRODUCT_TIER_BY_INDEX = ["silver", "gold", "ruby", "emerald", "rainbow"] as const;
@@ -187,6 +194,7 @@ export default function UnityView() {
         dataUrl: `${unityServerIp}/o.data`,
         frameworkUrl: `${unityServerIp}/o.framework.js`,
         codeUrl: `${unityServerIp}/o.wasm`,
+        ...UNITY_WEBGL_META,
     });
 
     const buildUnityGameSnapshot = useCallback(
