@@ -26,16 +26,9 @@ import {
     type OwnedFarmProductNft,
 } from "../services/marketplaceService";
 import TxSuccessDialog from "./TxSuccessDialog";
+import { extractSuiTxDigest } from "../utils/extractSuiTxDigest";
 
 const shortenAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;
-
-function txDigestFromSignResult(result: unknown): string | undefined {
-    if (result && typeof result === "object" && "digest" in result) {
-        const d = (result as { digest: unknown }).digest;
-        return typeof d === "string" && d.length > 0 ? d : undefined;
-    }
-    return undefined;
-}
 
 export type FarmMarketplacePanelProps = {
     /**
@@ -195,7 +188,7 @@ export default function FarmMarketplacePanel({
                         id,
                     );
                     const signed = await signAndExecute({ transaction: tx });
-                    const digest = txDigestFromSignResult(signed);
+                    const digest = extractSuiTxDigest(signed);
                     if (digest) {
                         await suiClient.waitForTransaction({
                             digest,
@@ -390,7 +383,7 @@ export default function FarmMarketplacePanel({
                                                                 const signed = await signAndExecute({
                                                                     transaction: tx,
                                                                 });
-                                                                const digest = txDigestFromSignResult(signed);
+                                                                const digest = extractSuiTxDigest(signed);
                                                                 if (digest) {
                                                                     await suiClient.waitForTransaction({
                                                                         digest,
@@ -404,7 +397,7 @@ export default function FarmMarketplacePanel({
                                                                     row.nftLabel?.trim() || "Farm product NFT";
                                                                 setBuySuccess({
                                                                     open: true,
-                                                                    description: `Đã mua ${label} với ${row.priceFcDisplay} FC.`,
+                                                                    description: `Purchased ${label} for ${row.priceFcDisplay} FC.`,
                                                                     digest,
                                                                 });
                                                             } catch (e: unknown) {
@@ -566,7 +559,7 @@ export default function FarmMarketplacePanel({
                                     mist,
                                 );
                                 const signed = await signAndExecute({ transaction: tx });
-                                const digest = txDigestFromSignResult(signed);
+                                const digest = extractSuiTxDigest(signed);
                                 if (digest) {
                                     await suiClient.waitForTransaction({
                                         digest,
@@ -592,7 +585,7 @@ export default function FarmMarketplacePanel({
         <TxSuccessDialog
             open={buySuccess.open}
             onClose={() => setBuySuccess((s) => ({ ...s, open: false }))}
-            title="Mua NFT thành công"
+            title="Purchase successful"
             description={buySuccess.description}
             digest={buySuccess.digest}
         />

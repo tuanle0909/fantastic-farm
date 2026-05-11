@@ -19,8 +19,8 @@ export default function MarketplaceView() {
     const coinTypeConfigured = Boolean(getOnchainIdsFromEnv().coinType.trim());
     const fcDisplay = useMemo(() => {
         if (!walletConnected) return "—";
-        if (!coinTypeConfigured) return "Chưa cấu hình package";
-        if (fcMist === null) return "Đang tải…";
+        if (!coinTypeConfigured) return "Package not configured";
+        if (fcMist === null) return "Loading…";
         return `${formatFcFromMist(fcMist)} FC`;
     }, [walletConnected, coinTypeConfigured, fcMist]);
 
@@ -30,9 +30,9 @@ export default function MarketplaceView() {
                 <h2 className="text-lg font-semibold">Marketplace</h2>
                 <div
                     className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-3 py-2 text-sm shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
-                    title="Số FC on-chain trong ví (Fantastic Coin) — dùng để mua listing."
+                    title="On-chain Fantastic Coin balance in your wallet (used to buy listings)."
                 >
-                    <span className="text-[var(--muted)]">FC trong ví: </span>
+                    <span className="text-[var(--muted)]">Wallet FC: </span>
                     <span className="font-semibold tabular-nums text-[var(--text)]">{fcDisplay}</span>
                 </div>
             </div>
@@ -47,7 +47,7 @@ export default function MarketplaceView() {
                         onClick={() => setMarketplaceError("")}
                         className="shrink-0 rounded-md border border-rose-400/40 px-2 py-0.5 text-xs text-rose-100 hover:bg-rose-900/40"
                     >
-                        Đóng
+                        Dismiss
                     </button>
                 </div>
             ) : null}

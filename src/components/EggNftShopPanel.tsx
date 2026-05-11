@@ -19,6 +19,7 @@ import {
     formatFcFromMist,
     type OwnedEggNft,
 } from "../services/marketplaceService";
+import { extractSuiTxDigest } from "../utils/extractSuiTxDigest";
 
 const EGG_SHOP_ROWS: { species: SpeciesId; speciesCode: 0 | 1 | 2 | 3 }[] = [
     { species: "chicken", speciesCode: 0 },
@@ -41,14 +42,6 @@ export type EggNftShopPanelProps = {
     /** After BE finalizes hatch (burn tx already succeeded on chain). */
     onHatchFinalize?: (data: GameLoadData) => void | Promise<void>;
 };
-
-function txDigestFromSignResult(result: unknown): string | undefined {
-    if (result && typeof result === "object" && "digest" in result) {
-        const d = (result as { digest: unknown }).digest;
-        return typeof d === "string" && d.length > 0 ? d : undefined;
-    }
-    return undefined;
-}
 
 /**
  * FC shop: mint on-chain `EggNft` (`egg_shop::buy_egg_with_fc`).
@@ -121,7 +114,7 @@ export default function EggNftShopPanel({
             });
             void dispatchEconomyRefresh();
             void loadOwnedEggs();
-            return txDigestFromSignResult(res);
+            return extractSuiTxDigest(res);
         } catch (e: unknown) {
             report(mapApiErrorMessage(e, "Egg NFT purchase failed."));
             throw e;
@@ -134,7 +127,7 @@ export default function EggNftShopPanel({
             await preflightEggNftHatchOnChain(speciesCode);
             const tx = buildBurnEggForHatchTransaction({ packageId: pkg, eggObjectId });
             const res = await signAndExecute({ transaction: tx });
-            const digest = txDigestFromSignResult(res);
+            const digest = extractSuiTxDigest(res);
             if (!digest) throw new Error("Missing transaction digest from wallet.");
             await suiClient.waitForTransaction({
                 digest,
