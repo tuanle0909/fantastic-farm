@@ -259,7 +259,11 @@ export default function FarmMarketplacePanel({
                     Refresh listings &amp; my FarmProductNft
                 </button>
             </div>
-            {localError && !onError ? <p className="mt-2 text-xs text-rose-500">{localError}</p> : null}
+            {localError && !onError ? (
+                <p className="mt-2 text-xs text-rose-500" role="alert">
+                    {localError}
+                </p>
+            ) : null}
             <div className="mt-3 rounded-lg border border-[var(--border)] bg-[var(--card)]/50 p-3">
                 <p className="text-xs font-medium text-[var(--text)]">
                     Your FarmProductNft listings on Marketplace
@@ -376,21 +380,40 @@ export default function FarmMarketplacePanel({
                                                                     effectiveCoinType,
                                                                     BigInt(row.priceMist),
                                                                 );
-                                                                await buildBuyFarmProductListingTransaction(
+                                                                const tx = await buildBuyFarmProductListingTransaction(
                                                                     suiClient,
                                                                     effectivePackageId,
                                                                     onchainEnv.marketplaceId,
                                                                     BigInt(row.listingId),
                                                                     coinObjectIds,
                                                                 );
-                                                                // const signed = await signAndExecute({
-                                                                //     transaction: tx,
-                                                                // });
+                                                                const signed = await signAndExecute({
+                                                                    transaction: tx,
+                                                                });
+                                                                const digest = txDigestFromSignResult(signed);
+                                                                if (digest) {
+                                                                    await suiClient.waitForTransaction({
+                                                                        digest,
+                                                                        options: { showEffects: true },
+                                                                    });
+                                                                }
                                                                 await refreshMarketplace();
                                                                 dispatchEconomyRefresh();
                                                                 clearErrors();
+                                                                const label =
+                                                                    row.nftLabel?.trim() || "Farm product NFT";
+                                                                setBuySuccess({
+                                                                    open: true,
+                                                                    description: `Đã mua ${label} với ${row.priceFcDisplay} FC.`,
+                                                                    digest,
+                                                                });
                                                             } catch (e: unknown) {
-                                                                report(mapApiErrorMessage(e, "Buy listing failed."));
+                                                                report(
+                                                                    mapApiErrorMessage(
+                                                                        e,
+                                                                        "Buy listing failed — check FC balance, listing id, and wallet approval.",
+                                                                    ),
+                                                                );
                                                             } finally {
                                                                 setMpBusy(false);
                                                             }
