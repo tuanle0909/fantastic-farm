@@ -598,6 +598,15 @@ export default function UnityView() {
                 } catch (err: unknown) {
                     // eslint-disable-next-line no-console
                     console.warn("[Unity] mintFarmProduct failed", err);
+                    sendMessage(
+                        UNITY_BRIDGE_OBJECT,
+                        "OnMintFarmProductResult",
+                        JSON.stringify({
+                            success: false,
+                            pendingMintId,
+                            message: mapApiErrorMessage(err, "Mint cancelled or failed."),
+                        }),
+                    );
                     void refreshUnityGame("mint_farm_product_failed");
                 }
             })();
