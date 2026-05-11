@@ -774,22 +774,6 @@ export default function UnityView() {
                     className="h-full w-full"
                 />
             </div>
-            {authState === "in-game" ? (
-                <>
-                    <EggNftShopPanel
-                        active={authState === "in-game"}
-                        onError={setEggShopError}
-                        playerGold={gameUser?.gold}
-                        onHatchFinalize={handleOnChainHatchFinalize}
-                    />
-                    {eggShopError ? (
-                        <p className="mt-2 text-xs text-rose-500" role="alert">
-                            {eggShopError}
-                        </p>
-                    ) : null}
-                    <FarmPanel />
-                </>
-            ) : null}
         </div>
     );
 }

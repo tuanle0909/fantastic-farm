@@ -71,11 +71,8 @@ function IconMarketplace({ className }: { className?: string }) {
 function IconAvatar({ className }: { className?: string }) {
     return (
         <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM4 21v-1a6 6 0 0112 0v1"
-            />
+            <circle cx="12" cy="8" r="4" />
+            <path strokeLinecap="round" d="M6 20.5c0-3.5 3-6.5 6-6.5s6 3 6 6.5" />
         </svg>
     );
 }
