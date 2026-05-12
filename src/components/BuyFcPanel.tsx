@@ -69,7 +69,7 @@ export default function BuyFcPanel() {
     );
 
     return (
-        <div className="relative z-50 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 pointer-events-auto">
+        <div className="relative rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
             <h3 className="text-sm font-semibold">Buy FC</h3>
             {missingRegistry ? (
                 <div className="mt-3 rounded-lg border border-amber-900/50 bg-amber-950/25 px-3 py-2 text-[11px] text-amber-100/95">

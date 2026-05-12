@@ -1,3 +1,5 @@
+import { createPortal } from "react-dom";
+
 type TxSuccessDialogProps = {
     open: boolean;
     onClose: () => void;
@@ -24,7 +26,7 @@ export default function TxSuccessDialog({
     digest,
     variant = "success",
 }: TxSuccessDialogProps) {
-    if (!open) return null;
+    if (!open || typeof document === "undefined") return null;
 
     const isError = variant === "error";
     const txUrl = digest ? suiTxExplorerUrl(digest) : null;
@@ -33,9 +35,10 @@ export default function TxSuccessDialog({
         ? "border-rose-500/40 bg-[var(--card)] ring-1 ring-rose-500/15"
         : "border-[var(--border)] bg-[var(--card)]";
 
-    return (
+    /** Portal avoids stacking under sibling panels (`z-50` Buy/Sell cards). */
+    return createPortal(
         <div
-            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/55 p-4"
+            className="fixed inset-0 z-[300] flex items-center justify-center bg-black/55 p-4"
             role="presentation"
             onClick={onClose}
         >
@@ -77,6 +80,7 @@ export default function TxSuccessDialog({
                     Close
                 </button>
             </div>
-        </div>
+        </div>,
+        document.body,
     );
 }
